@@ -1,0 +1,60 @@
+name: Build
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build_linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        if: github.event.pull_request.draft == false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install
+      - run: yarn run make
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts-linux
+          path: |
+            out/make/deb/x64/*.deb
+            out/make/rpm/x64/*.rpm
+
+  build_mac:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+        if: github.event.pull_request.draft == false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install
+      - run: yarn run make
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts-mac
+          path: |
+            out/make/*.dmg
+            out/make/zip/darwin/x64/*.zip
+
+  build_win:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v3
+        if: github.event.pull_request.draft == false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install
+      - run: yarn run make
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts-win
+          path: |
+            out/make/squirrel.windows/x64/*.exe
+            out/make/squirrel.windows/x64/*.nupkg
