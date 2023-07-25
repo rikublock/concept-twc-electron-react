@@ -1,6 +1,6 @@
 {
   "name": "concept-twc-electron-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "proof of concept; electron app together with react js using the wasm trustwallet core",
   "main": ".webpack/main",
   "scripts": {
