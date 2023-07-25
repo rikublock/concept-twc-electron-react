@@ -19,13 +19,22 @@ export const rules: Required<ModuleOptions>["rules"] = [
     },
   },
   {
-    test: /\.tsx?$/,
-    exclude: /(node_modules|\.webpack)/,
-    use: {
-      loader: "ts-loader",
-      options: {
-        transpileOnly: true,
-      },
-    },
+    test: /\.[jt]sx?$/,
+    loader: "esbuild-loader",
+  },
+  {
+    test: /\.(png|jpg|jpeg|gif|ico)$/i,
+    type: "asset/resource",
+  },
+  {
+    test: /\.svg$/i,
+    type: "asset/resource",
+    resourceQuery: /url/, // *.svg?url
+  },
+  {
+    test: /\.svg$/i,
+    issuer: /\.[jt]sx?$/i,
+    resourceQuery: { not: [/url/] }, // exclude react component if *.svg?url
+    use: ["@svgr/webpack"],
   },
 ];
